@@ -1,17 +1,17 @@
 <template>
   <div class="MainLanding">
-    <Main helloMsg="For Paletter" />
+    <TitleCard />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Main from "@/components/Main.vue";
+import TitleCard from "@/components/TitleCard.vue";
 
 export default {
   name: "MainLanding",
   components: {
-    Main
+    TitleCard
   }
 };
 </script>
