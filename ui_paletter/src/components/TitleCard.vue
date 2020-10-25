@@ -1,6 +1,5 @@
 <template>
-  <transition name="slide-up">
-    <div v-if="isActive" class="title">
+    <div class="title">
       <div>
         <p class="title_mp">M<span>OVING</span></p>
         <p class="title_mp">P<span>ALETTES</span></p>
@@ -10,55 +9,19 @@
         </p>
       </div>
     </div>
-  </transition>
 </template>
 
 <script>
-import router from "./../router";
-
 export default {
-  created() {
-    window.addEventListener("wheel", this.scrollDown);
-  },
-  destroyed() {
-    window.removeEventListener("wheel", this.scrollDown);
-  },
   name: "TitleCard",
-  props: {},
-  data() {
-    return {
-      isScrolled: false,
-      isActive: true,
-    };
-  },
-  methods: {
-    scrollDown(e) {
-      if (e.deltaY > 0) {
-        this.isActive = false;
-        window.removeEventListener("wheel", this.scrollDown);
-        setTimeout(() => {
-          router.push("generator");
-        }, 799);
-      }
-    },
-  },
 };
 </script>
 
 <style scoped>
-.slide-up-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.1, 0.25, 1);
-}
-
-.slide-up-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(-100%);
-  /* opacity: 0; */
-}
-
 .title {
-  height: calc(100vh - 16px);
-  width: calc(100vw - 16px);
+  height: inherit;
+  /* height: 100vh;
+  width: 100vw; */
   display: flex;
   justify-content: left;
   align-items: center;
