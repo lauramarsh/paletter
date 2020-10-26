@@ -4,8 +4,10 @@
       :paletteNamesById="paletteNamesById"
       :currentView="currentView"
       @change-view="changeView"
+      @change-palette="changePalette"
     />
-    <component :is="currentViewComponent"> </component>
+    <component :is="currentViewComponent" v-bind="currentViewProps">
+    </component>
   </div>
 </template>
 
@@ -27,7 +29,8 @@ export default {
   },
   data: () => ({
     currentView: "",
-    palettes: [],
+    currentPalId: 0,
+    palettes: {},
     paletteNamesById: {},
   }),
   async mounted() {
@@ -35,28 +38,45 @@ export default {
       return axios.get("http://127.0.0.1:8000/palettes/");
     };
 
-    const palettes = await fetchPalettes();
+    const fetchedPalettes = await fetchPalettes();
+
+    const palettes = {};
     const paletteNamesById = {};
-    palettes.data.forEach(pal => {
+    fetchedPalettes.data.forEach(pal => {
+      palettes[pal.id] = pal;
       paletteNamesById[pal.id] = pal.name;
     });
-    const initialView = palettes.data.length
-      ? `${palettes.data[0].name} ${palettes.data[0].id}`
+
+    const initialView = fetchedPalettes.data.length
+      ? `${fetchedPalettes.data[0].name} ${fetchedPalettes.data[0].id}`
       : "addPal";
 
-    this.palettes = palettes.data;
+    this.palettes = palettes;
     this.paletteNamesById = paletteNamesById;
     this.currentView = initialView;
+    this.currentPalId = fetchedPalettes.data.length
+      ? fetchedPalettes.data[0].id
+      : 0;
     console.log(this.currentView, this.palettes, this.paletteNamesById);
   },
   methods: {
     changeView(newView) {
       this.currentView = newView;
     },
+    changePalette(newId) {
+      this.currentPalId = newId;
+    },
   },
   computed: {
     currentViewComponent() {
       return this.currentView === "addPal" ? AddPalette : PaletteGenerator;
+    },
+    currentViewProps() {
+      if (this.currentViewComponent === PaletteGenerator) {
+        return { palette: this.palettes[this.currentPalId] };
+      } else {
+        return {};
+      }
     },
   },
 };

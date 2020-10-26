@@ -1,6 +1,8 @@
 <template>
-  <div class="hello">
-    Heya
+  <div class="palgen">
+    <div class="palgen-canvas">
+      <img v-if="palette" :src="palette.image">
+    </div>
   </div>
 </template>
 
@@ -8,9 +10,14 @@
 export default {
   name: "PaletteGenerator",
   props: {
+    palette: Object,
   }
 };
 </script>
 
 <style scoped>
+.palgen {
+  height: inherit;
+}
+
 </style>

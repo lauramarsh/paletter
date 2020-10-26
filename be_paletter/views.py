@@ -34,7 +34,7 @@ def palettes_list(request, format=None):
 
     if request.method == 'GET':
         palettes = Palettes.objects.all()
-        serializer = PalettesSerializer(palettes, many=True)
+        serializer = PalettesSerializer(palettes, many=True, context={'request': request})
         return Response(serializer.data)
 
     if request.method == 'POST':

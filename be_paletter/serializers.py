@@ -71,7 +71,6 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class PalettesSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
-
     class Meta:
         model = Palettes
         fields = [
