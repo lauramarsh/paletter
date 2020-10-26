@@ -30,9 +30,9 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
+    path('', include('be_paletter.urls')),
     path('be-paletter/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # path('be-paletter/', include('be_paletter.urls')),
     re_path(r"^.*$", IndexTemplateView.as_view(), name="entry-point"),
 ]

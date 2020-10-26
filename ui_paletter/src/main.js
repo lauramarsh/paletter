@@ -10,8 +10,8 @@ Vue.use(Vuesax, {
   colors: {
     // primary: "#8FC2E0",
     primary: "#CAAEA2",
-    success: "#BAD29F",
-    warning: "#FCAC73",
+    success: "#AFCB90",
+    warning: "#FDC49B",
     danger: "#B26C96",
     dark: "#503F48",
   },
