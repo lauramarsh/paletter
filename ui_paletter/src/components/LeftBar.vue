@@ -1,22 +1,42 @@
 <template>
   <div class="hidden">
-    <vs-sidebar absolute hover-expand v-model="active" open id="sidebar-custom">
-      <div @click="changeView">
+    <vs-sidebar
+      absolute
+      hover-expand
+      v-model="currentView"
+      open
+      id="sidebar-custom"
+    >
+      <div @click="navigateToAdd">
         <vs-sidebar-item id="addPal">
           <template #icon>
-            <i class="bx bx-plus"></i>
+            <i class="bx bx-image-add"></i>
           </template>
-          add new palette
+          Add new palette
         </vs-sidebar-item>
       </div>
-      <div @click="changeView">
-        <vs-sidebar-item id="genPal">
-          <template #icon>
-            <i></i>
-          </template>
-          Palettes
-        </vs-sidebar-item>
-      </div>
+      <vs-sidebar-group>
+        <template #header>
+          <vs-sidebar-item arrow>
+            <template #icon>
+              <i class="bx bx-palette"></i>
+            </template>
+            Palettes
+          </vs-sidebar-item>
+        </template>
+        <div
+          v-for="(palette, paletteId) in paletteNamesById"
+          :key="palette + paletteId"
+          @click="changePalette(palette, paletteId)"
+        >
+          <vs-sidebar-item :id="`${palette} ${paletteId}`">
+            <template #icon>
+              <i class="bx bx-radio-circle"></i>
+            </template>
+            {{ palette }}
+          </vs-sidebar-item>
+        </div>
+      </vs-sidebar-group>
     </vs-sidebar>
   </div>
 </template>
@@ -25,6 +45,7 @@ export default {
   name: "LeftBar",
   props: {
     currentView: String,
+    paletteNamesById: Object,
   },
   data() {
     return {
@@ -32,8 +53,12 @@ export default {
     };
   },
   methods: {
-    changeView() {
-      this.$emit("change-view", this.active);
+    navigateToAdd() {
+      this.$emit("change-view", "addPal");
+    },
+    changePalette(name, id) {
+      this.$emit("change-view", `${name} ${id}`);
+      this.$emit("change-palette", id);
     },
   },
 };
