@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from be_paletter.models import Palettes
 from rest_framework import serializers
+from PIL import Image
 
 
 class Base64ImageField(serializers.ImageField):
@@ -71,12 +72,26 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class PalettesSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
+    colors = serializers.SerializerMethodField('get_colors')
+
+    def get_colors(self, obj):
+        # Extract all colors from the image:
+        process_image = Image.open(obj.image)
+        converted_image = process_image.convert('RGB')
+        image_colors = set()
+        for pixel in converted_image.getdata():
+            r, g, b = pixel
+            image_colors.add((r, g, b))
+
+        return list(image_colors)
+
     class Meta:
         model = Palettes
         fields = [
             'id',
             'name',
             'image',
+            'colors',
             'source',
             'source_string',
         ]

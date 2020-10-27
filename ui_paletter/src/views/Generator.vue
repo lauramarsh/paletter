@@ -57,7 +57,6 @@ export default {
     this.currentPalId = fetchedPalettes.data.length
       ? fetchedPalettes.data[0].id
       : 0;
-    console.log(this.currentView, this.palettes, this.paletteNamesById);
   },
   methods: {
     changeView(newView) {

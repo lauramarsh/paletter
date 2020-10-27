@@ -20,4 +20,8 @@ export default {
   height: inherit;
 }
 
+.palgen-canvas > img {
+  max-width: 65%;
+}
+
 </style>
