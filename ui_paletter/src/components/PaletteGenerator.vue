@@ -1,12 +1,16 @@
 <template>
   <div class="palgen">
-    <div class="palgen-canvas">
+    <div class="palgen-canvas" :style="`grid-template-${orientation}: 4fr 1fr;`">
       <div>
         <img v-if="palette" :src="palette.image" class="image" />
       </div>
       <div
         class="palgen-colors"
-        :style="`grid-template-columns: repeat(${colorNum}, 1fr);`"
+        :style="
+          `grid-template-${
+            orientation === 'rows' ? 'columns' : 'rows'
+          }: repeat(${colorNum}, 1fr);`
+        "
       >
         <div
           :key="idx"
@@ -45,6 +49,19 @@
           Randomize Palette Colors
         </template>
       </vs-tooltip>
+      <vs-tooltip not-arrow primary border-thick>
+        <vs-button
+          icon
+          dark
+          transparent
+          @click="orientation = orientation === 'rows' ? 'columns' : 'rows'"
+        >
+          <i :class="toggleIcon"></i>
+        </vs-button>
+        <template #tooltip>
+          Toggle Palette Orientation
+        </template>
+      </vs-tooltip>
     </div>
   </div>
 </template>
@@ -55,10 +72,18 @@ export default {
   props: {
     palette: Object,
   },
+  computed: {
+    toggleIcon: function() {
+      return `bx bx-${
+        this.orientation === "rows" ? "grid-vertical" : "grid-horizontal"
+      }`;
+    },
+  },
   data() {
     return {
       colorNum: 7, // number of colors to load with the palette - default: 7
       randomColors: [], // random selected colors corresponding to the 'colors' array in the passed in palette obj
+      orientation: "rows", // orientation for the palette & colors
     };
   },
   watch: {
@@ -103,13 +128,6 @@ export default {
       while (randomIdxs.size < amount) {
         randomIdxs.add(this.getRandomIdx(colorsArray.length));
       }
-      // console.log(
-      //   "RANDOS: ",
-      //   [...randomIdxs].map(idx => {
-      //     const rgb = colorsArray[idx];
-      //     return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-      //   })
-      // );
       this.randomColors = [...randomIdxs].map(idx => {
         const rgb = colorsArray[idx];
         return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
@@ -132,7 +150,6 @@ export default {
   max-width: 65%;
   display: grid;
   grid-gap: 1rem;
-  grid-template-rows: 4fr 1fr;
 }
 
 .palgen-canvas > div {
