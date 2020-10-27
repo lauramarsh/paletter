@@ -3,6 +3,7 @@
     <vs-sidebar
       absolute
       hover-expand
+      reduce
       v-model="currentView"
       open
       id="sidebar-custom"
@@ -39,7 +40,7 @@
       </vs-sidebar-group>
     </vs-sidebar>
   </div>
-</template>
+</template> 
 <script>
 export default {
   name: "LeftBar",

@@ -142,7 +142,15 @@ export default {
       this.isUploading = false;
     },
     async createPalette(paletteData) {
-      await axios.post("http://127.0.0.1:8000/palettes/", paletteData);
+      const postResult = await axios.post(
+        "http://127.0.0.1:8000/palettes/",
+        paletteData
+      );
+      console.log("postRes, ", postResult);
+      this.$emit("added-palette", {
+        id: postResult.data.id,
+        name: postResult.data.name,
+      });
       Object.assign(this.$data, initialState());
     },
   },

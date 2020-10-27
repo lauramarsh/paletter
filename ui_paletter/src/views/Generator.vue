@@ -7,7 +7,11 @@
       @change-palette="changePalette"
     />
     <keep-alive>
-      <component :is="currentViewComponent" v-bind="currentViewProps">
+      <component
+        :is="currentViewComponent"
+        v-bind="currentViewProps"
+        @added-palette="addedPalette"
+      >
       </component>
     </keep-alive>
   </div>
@@ -39,7 +43,6 @@ export default {
     const fetchPalettes = () => {
       return axios.get("http://127.0.0.1:8000/palettes/");
     };
-
     const fetchedPalettes = await fetchPalettes();
 
     const palettes = {};
@@ -60,12 +63,38 @@ export default {
       ? fetchedPalettes.data[0].id
       : 0;
   },
+  watch: {
+    paletteNamesById: async function(newMap, oldMap) {
+      console.log("IN CATCH watcher");
+
+      if (Object.keys(newMap).length !== Object.keys(oldMap).length) {
+        console.log("IN CATCH watcher INSIDE");
+
+        const fetchPalettes = () => {
+          return axios.get("http://127.0.0.1:8000/palettes/");
+        };
+
+        const fetchedPalettes = await fetchPalettes();
+        const palettes = {};
+        const paletteNamesById = {};
+        fetchedPalettes.data.forEach(pal => {
+          palettes[pal.id] = pal;
+          paletteNamesById[pal.id] = pal.name;
+        });
+        this.palettes = palettes;
+        this.paletteNamesById = paletteNamesById;
+      }
+    },
+  },
   methods: {
     changeView(newView) {
       this.currentView = newView;
     },
     changePalette(newId) {
       this.currentPalId = newId;
+    },
+    addedPalette({ id, name }) {
+      this.$set(this.paletteNamesById, id, name);
     },
   },
   computed: {
