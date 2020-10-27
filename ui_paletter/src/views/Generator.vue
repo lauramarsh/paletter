@@ -6,8 +6,10 @@
       @change-view="changeView"
       @change-palette="changePalette"
     />
-    <component :is="currentViewComponent" v-bind="currentViewProps">
-    </component>
+    <keep-alive>
+      <component :is="currentViewComponent" v-bind="currentViewProps">
+      </component>
+    </keep-alive>
   </div>
 </template>
 

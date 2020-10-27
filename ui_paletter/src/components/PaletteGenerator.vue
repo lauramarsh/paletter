@@ -4,13 +4,47 @@
       <div>
         <img v-if="palette" :src="palette.image" class="image" />
       </div>
-      <div class="palgen-colors" style="grid-template-columns: repeat(7, 1fr);">
+      <div
+        class="palgen-colors"
+        :style="`grid-template-columns: repeat(${colorNum}, 1fr);`"
+      >
         <div
           :key="idx"
-          v-for="(col, idx) in 7"
-          :style="`background: ${randomColors[idx]}`"
+          v-for="(col, idx) in colorNum"
+          :style="`background: ${randomColors[idx]};`"
         />
       </div>
+    </div>
+    <div class="palgen-controls" v-if="palette">
+      <vs-tooltip not-arrow primary border-thick>
+        <vs-button icon warn transparent @click="decColorNum()">
+          <i class="bx bx-minus-circle"></i>
+        </vs-button>
+        <template #tooltip>
+          Remove Color
+        </template>
+      </vs-tooltip>
+      <vs-tooltip not-arrow primary border-thick>
+        <vs-button icon warn transparent @click="incColorNum()">
+          <i class="bx bx-plus-circle"></i>
+        </vs-button>
+        <template #tooltip>
+          Add Color
+        </template>
+      </vs-tooltip>
+      <vs-tooltip not-arrow primary border-thick>
+        <vs-button
+          icon
+          danger
+          transparent
+          @click="loadRandomColors(colorNum, palette.colors)"
+        >
+          <i class="bx bx-shuffle"></i>
+        </vs-button>
+        <template #tooltip>
+          Randomize Palette Colors
+        </template>
+      </vs-tooltip>
     </div>
   </div>
 </template>
@@ -27,33 +61,55 @@ export default {
       randomColors: [], // random selected colors corresponding to the 'colors' array in the passed in palette obj
     };
   },
-  // mounted: function() {},
   watch: {
     palette: function(newPalette) {
       // upon palette load/change, use rng to load up the default number of colors
       if (newPalette && newPalette.colors && newPalette.colors.length) {
-        this.loadColors(this.colorNum, newPalette.colors);
+        this.loadRandomColors(this.colorNum, newPalette.colors);
       }
     },
   },
   methods: {
-    loadColors(amount, colorsArray) {
+    incColorNum() {
+      if (this.colorNum < 12) {
+        this.colorNum += 1;
+        const randomColors = this.randomColors;
+        randomColors.push(this.getRandomColor(this.$props.palette.colors));
+        console.log("increment", randomColors);
+        this.randomColors = randomColors;
+      }
+    },
+    decColorNum() {
+      if (this.colorNum > 1) {
+        this.colorNum -= 1;
+        const randomColors = this.randomColors;
+        randomColors.pop();
+        this.randomColors = randomColors;
+      }
+    },
+    getRandomIdx(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    },
+    getRandomColor(colorsArray) {
+      // randomizes and returns a single color
+      //    inneficient, but checks randomColors for duplicates
+      const rgb = colorsArray[this.getRandomIdx(colorsArray.length)];
+      return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+    },
+    loadRandomColors(amount, colorsArray) {
       // selects {amount} of random idx positions to load randomIdxs with.
       //  Used to select random colors in display
-      const getRandomIdx = max => {
-        return Math.floor(Math.random() * Math.floor(max));
-      };
       const randomIdxs = new Set();
       while (randomIdxs.size < amount) {
-        randomIdxs.add(getRandomIdx(this.$props.palette.colors.length));
+        randomIdxs.add(this.getRandomIdx(colorsArray.length));
       }
-      console.log(
-        "RANDOS: ",
-        [...randomIdxs].map(idx => {
-          const rgb = colorsArray[idx];
-          return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-        })
-      );
+      // console.log(
+      //   "RANDOS: ",
+      //   [...randomIdxs].map(idx => {
+      //     const rgb = colorsArray[idx];
+      //     return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+      //   })
+      // );
       this.randomColors = [...randomIdxs].map(idx => {
         const rgb = colorsArray[idx];
         return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
@@ -69,6 +125,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .palgen-canvas {
@@ -82,17 +139,24 @@ export default {
   width: inherit;
 }
 
-.palgen-canvas > .palgen-colors {
+.palgen-canvas > div > .image {
+  width: 100%;
+}
+
+.palgen-controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+.palgen-colors {
   display: grid;
   grid-gap: 1rem;
 }
 
-.palgen-canvas > .palgen-colors > * {
+.palgen-colors > * {
   height: 100%;
-  width: 100%;
-}
-
-.palgen-canvas > div > .image {
   width: 100%;
 }
 </style>
