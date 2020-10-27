@@ -1,9 +1,6 @@
 <template>
   <div class="add">
     <div class="add_form">
-      <div class="title">
-        <p>add a new palette</p>
-      </div>
       <div class="fields">
         <div class="fields_upload">
           <div v-if="!image" class="fields_upload-no">
@@ -136,11 +133,13 @@ export default {
       var vm = this;
       reader.onload = e => {
         vm.image = e.target.result;
+        vm.isUploading = false;
       };
       reader.readAsDataURL(file);
     },
     removeImage: function() {
       this.image = "";
+      this.isUploading = false;
     },
     async createPalette(paletteData) {
       await axios.post("http://127.0.0.1:8000/palettes/", paletteData);
@@ -167,6 +166,10 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+}
+
+.fields_upload-yes > img {
+  max-width: 60%;
 }
 
 .vs-input__label {
