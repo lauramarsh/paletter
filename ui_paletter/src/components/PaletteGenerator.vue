@@ -77,7 +77,7 @@
           <i :class="toggleEyeIcon"></i>
         </vs-button>
         <template #tooltip>
-          Show Hex Values
+          {{isHexVisible ? "Hide" : "Show"}} Hex Values
         </template>
       </vs-tooltip>
     </div>

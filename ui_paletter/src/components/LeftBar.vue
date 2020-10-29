@@ -27,7 +27,7 @@
         </template>
         <div
           v-for="(palette, paletteId) in paletteNamesById"
-          :key="palette + paletteId"
+          :key="paletteId"
           @click="changePalette(palette, paletteId)"
         >
           <vs-sidebar-item :id="`${palette} ${paletteId}`">

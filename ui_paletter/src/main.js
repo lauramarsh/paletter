@@ -1,11 +1,14 @@
 import Vue from "vue";
 import Vuesax from "vuesax";
 import "vuesax/dist/vuesax.css";
+import Particles from "particles.vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import 'boxicons';
 
+
+Vue.use(Particles);
 Vue.use(Vuesax, {
   colors: {
     // primary: "#8FC2E0",

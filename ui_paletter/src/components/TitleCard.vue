@@ -1,37 +1,106 @@
 <template>
-    <div class="title">
-      <div>
-        <p class="title_mp">M<span>OVING</span></p>
-        <p class="title_mp">P<span>ALETTES</span></p>
-        <p>
-          A cinemagraphic collage generator. Relax, browse, add, and edit custom
-          palettes however you like.
-        </p>
-      </div>
+  <div class="title">
+    <div id="particles-js"></div>
+    <div>
+      <p class="title_mp">M<span>OVING</span></p>
+      <p class="title_mp">P<span>ALETTES</span></p>
+      <p>
+        A cinemagraphic collage generator. Relax, browse, add, and edit custom
+        palettes however you like.
+      </p>
     </div>
+  </div>
 </template>
 
 <script>
+import "particles.js";
 export default {
   name: "TitleCard",
+  mounted() {
+    this.initParticles();
+  },
+  methods: {
+    initParticles() {
+      window.particlesJS("particles-js", {
+        particles: {
+          number: { value: 400, density: { enable: true, value_area: 800 } },
+          color: { value: "#fff" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "img/github.svg", width: 100, height: 100 },
+          },
+          opacity: {
+            value: 0.5,
+            random: true,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+          },
+          size: {
+            value: 10,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+          },
+          line_linked: {
+            enable: false,
+            distance: 500,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 2,
+          },
+          move: {
+            enable: true,
+            speed: 3,
+            direction: "top-right",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "bubble" },
+            onclick: { enable: true, mode: "repulse" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 400, line_linked: { opacity: 0.5 } },
+            bubble: {
+              distance: 400,
+              size: 4,
+              duration: 0.3,
+              opacity: 1,
+              speed: 3,
+            },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+    },
+  },
 };
 </script>
 
 <style scoped>
+#particles-js {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .title {
   height: inherit;
-  /* height: 100vh;
-  width: 100vw; */
   display: flex;
   justify-content: left;
   align-items: center;
-
-  /* background: linear-gradient(208deg, #fcac73, #9bbe74, #8fc2e0, #b26c96);
-  background-size: 800% 800%;
-  -webkit-animation: AnimationName 12s ease infinite;
-  -moz-animation: AnimationName 12s ease infinite;
-  -o-animation: AnimationName 12s ease infinite;
-  animation: AnimationName 12s ease infinite; */
 
   background: linear-gradient(
     230deg,
@@ -49,7 +118,12 @@ export default {
   animation: AnimationName 45s ease infinite;
 }
 
-.title div {
+.title > div:first-child {
+  /* width: inherit;
+  height: inherit; */
+}
+
+.title > div:last-child {
   margin-left: 4rem;
 }
 
@@ -77,54 +151,6 @@ export default {
 .title_mp span {
   font-size: 5rem;
 }
-
-/* @-webkit-keyframes AnimationName {
-  0% {
-    background-position: 0% 99%;
-  }
-  50% {
-    background-position: 100% 2%;
-  }
-  100% {
-    background-position: 0% 99%;
-  }
-}
-
-@-moz-keyframes AnimationName {
-  0% {
-    background-position: 0% 99%;
-  }
-  50% {
-    background-position: 100% 2%;
-  }
-  100% {
-    background-position: 0% 99%;
-  }
-}
-
-@-o-keyframes AnimationName {
-  0% {
-    background-position: 0% 99%;
-  }
-  50% {
-    background-position: 100% 2%;
-  }
-  100% {
-    background-position: 0% 99%;
-  }
-}
-
-@keyframes AnimationName {
-  0% {
-    background-position: 0% 99%;
-  }
-  50% {
-    background-position: 100% 2%;
-  }
-  100% {
-    background-position: 0% 99%;
-  }   
-} */
 
 @-webkit-keyframes AnimationName {
   0% {

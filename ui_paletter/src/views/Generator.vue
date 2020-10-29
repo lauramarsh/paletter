@@ -65,11 +65,7 @@ export default {
   },
   watch: {
     paletteNamesById: async function(newMap, oldMap) {
-      console.log("IN CATCH watcher");
-
       if (Object.keys(newMap).length !== Object.keys(oldMap).length) {
-        console.log("IN CATCH watcher INSIDE");
-
         const fetchPalettes = () => {
           return axios.get("http://127.0.0.1:8000/palettes/");
         };
