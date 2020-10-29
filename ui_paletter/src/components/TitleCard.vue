@@ -1,14 +1,19 @@
 <template>
   <div class="title">
     <div id="particles-js"></div>
-    <div>
-      <p class="title_mp">M<span>OVING</span></p>
-      <p class="title_mp">P<span>ALETTES</span></p>
+    <div class="title_header">
+      <p class="title_mp">MOVING</p>
+      <p class="title_mp">PALETTES</p>
       <p>
-        A cinemagraphic collage generator. Relax, browse, add, and edit custom
+        A cinemagraphic collage generator. Relax, browse, and add custom
         palettes however you like.
       </p>
     </div>
+    <section class="title_scroll">
+      <vs-button icon color="#ffffff" transparent @click="scrollDown">
+        <i class="bx bx-chevron-down icon"></i>
+      </vs-button>
+    </section>
   </div>
 </template>
 
@@ -32,7 +37,7 @@ export default {
             image: { src: "img/github.svg", width: 100, height: 100 },
           },
           opacity: {
-            value: 0.5,
+            value: 0.35,
             random: true,
             anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
           },
@@ -52,7 +57,7 @@ export default {
             enable: true,
             speed: 3,
             direction: "top-right",
-            random: false,
+            random: true,
             straight: false,
             out_mode: "out",
             bounce: false,
@@ -69,8 +74,8 @@ export default {
           modes: {
             grab: { distance: 400, line_linked: { opacity: 0.5 } },
             bubble: {
-              distance: 400,
-              size: 4,
+              distance: 300,
+              size: 1,
               duration: 0.3,
               opacity: 1,
               speed: 3,
@@ -82,6 +87,9 @@ export default {
         },
         retina_detect: true,
       });
+    },
+    scrollDown(e) {
+      this.$emit("scroll-down", e, "just do it");
     },
   },
 };
@@ -97,6 +105,7 @@ export default {
 }
 
 .title {
+  position: relative;
   height: inherit;
   display: flex;
   justify-content: left;
@@ -112,47 +121,107 @@ export default {
     #dbc1b6
   );
   background-size: 1200% 1200%;
-  -webkit-animation: AnimationName 45s ease infinite;
-  -moz-animation: AnimationName 45s ease infinite;
-  -o-animation: AnimationName 45s ease infinite;
-  animation: AnimationName 45s ease infinite;
+  -webkit-animation: GradientShift 45s ease infinite;
+  -moz-animation: GradientShift 45s ease infinite;
+  -o-animation: GradientShift 45s ease infinite;
+  animation: GradientShift 45s ease infinite;
 }
 
-.title > div:first-child {
-  /* width: inherit;
-  height: inherit; */
-}
-
-.title > div:last-child {
+.title_header {
   margin-left: 4rem;
 }
 
-.title p {
+.title_header p {
   color: white;
   text-align: left;
   margin: 0px;
 }
 
-.title p:last-child {
+.title_header p:last-child {
   padding-left: 0.5rem;
   padding-top: 1rem;
   font-style: italic;
   line-height: 1.25rem;
   max-width: 25rem;
+  text-shadow: 0 0 2px #ffffff;
 }
 
 .title_mp {
-  font-size: 7rem;
-  line-height: 5rem;
+  font-size: 7vw;
   font-weight: bold;
-  letter-spacing: 5px;
+  text-shadow: 0 0 4px #ffffff;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "Source Sans Pro", sans-serif;
+  animation: reveal 3000ms ease-in-out forwards 200ms,
+    glow 2500ms linear infinite 2000ms;
 }
 
 .title_mp span {
   font-size: 5rem;
 }
 
-@-webkit-keyframes AnimationName {
+.title_scroll {
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - 3rem);
+
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: bottom;
+  animation-name: bounce-2;
+  animation-timing-function: ease;
+}
+
+.icon {
+  font-size: 3rem;
+  text-shadow: 0 0 6px #ffffff;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .title_header {
+    margin-left: 2rem;
+  }
+
+  .title_mp {
+    font-size: 10vw;
+    font-weight: bold;
+    text-shadow: 0 0 4px #ffffff;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: "Source Sans Pro", sans-serif;
+    animation: reveal 3000ms ease-in-out forwards 200ms,
+      glow 2500ms linear infinite 2000ms;
+  }
+
+  .title_header p:last-child {
+    padding-left: 0.5rem;
+    padding-top: 1rem;
+    font-style: italic;
+    line-height: 1.25rem;
+    max-width: 20rem;
+    text-shadow: 0 0 2px #ffffff;
+  }
+}
+
+@keyframes bounce-2 {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes GradientShift {
   0% {
     background-position: 0% 66%;
   }
@@ -163,7 +232,7 @@ export default {
     background-position: 0% 66%;
   }
 }
-@-moz-keyframes AnimationName {
+@-moz-keyframes GradientShift {
   0% {
     background-position: 0% 66%;
   }
@@ -174,7 +243,7 @@ export default {
     background-position: 0% 66%;
   }
 }
-@-o-keyframes AnimationName {
+@-o-keyframes GradientShift {
   0% {
     background-position: 0% 66%;
   }
@@ -185,7 +254,7 @@ export default {
     background-position: 0% 66%;
   }
 }
-@keyframes AnimationName {
+@keyframes GradientShift {
   0% {
     background-position: 0% 66%;
   }
@@ -194,6 +263,19 @@ export default {
   }
   100% {
     background-position: 0% 66%;
+  }
+}
+@keyframes reveal {
+  80% {
+    letter-spacing: 4px;
+  }
+  100% {
+    background-size: 300% 300%;
+  }
+}
+@keyframes glow {
+  40% {
+    text-shadow: 0 0 8px #ffffff;
   }
 }
 </style>

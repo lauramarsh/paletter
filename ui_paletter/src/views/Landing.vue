@@ -1,7 +1,7 @@
 <template>
   <div class="MainLanding">
     <transition name="slide-up">
-      <TitleCard v-if="isActive" />
+      <TitleCard v-if="isActive" @scroll-down="scrollDown" />
     </transition>
   </div>
 </template>
@@ -15,7 +15,13 @@ export default {
   created() {
     window.addEventListener("wheel", this.scrollDown);
   },
+  mounted() {
+    setTimeout(() => {
+      this.isActive = true;
+    }, 200);
+  },
   destroyed() {
+    this.isActive = false;
     window.removeEventListener("wheel", this.scrollDown);
   },
   name: "MainLanding",
@@ -24,12 +30,12 @@ export default {
   },
   data() {
     return {
-      isActive: true,
+      isActive: false,
     };
   },
   methods: {
-    scrollDown(e) {
-      if (e.deltaY > 0) {
+    scrollDown(e, bypass=false) {
+      if (bypass || e.deltaY > 0) {
         this.isActive = false;
         window.removeEventListener("wheel", this.scrollDown);
         setTimeout(() => {
@@ -46,13 +52,20 @@ export default {
   height: inherit;
 }
 
+.slide-up-enter {
+  transform: translateY(100vh);
+  /* opacity: 0; */
+}
+
+.slide-up-enter-active {
+  transition: all 1s cubic-bezier(.22,.68,0,1);
+}
+
 .slide-up-leave-active {
   transition: all 0.8s cubic-bezier(1, 0.1, 0.25, 1);
 }
 
-.slide-up-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-up-leave-to {
   transform: translateY(-100vh);
-  /* opacity: 0; */
 }
 </style>

@@ -21,4 +21,12 @@
   padding: 3rem 6rem;
   height: -webkit-fill-available;
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  #border {
+    padding: 0px;
+    height: 100%;
+  }
+}
 </style>
